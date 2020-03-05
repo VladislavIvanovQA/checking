@@ -1,0 +1,106 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.3"
+    }
+}
+apply plugin: 'io.qameta.allure'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+apply plugin: 'maven'
+
+def ver = "0.2"
+
+group 'com.github.ivanovvlad9626'
+archivesBaseName = "CheckingLib"
+version = ver
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.maven.apache.org/maven2" }
+    maven { url "https://dl.bintray.com/qameta/maven-unstable/" }
+}
+
+dependencies {
+    compile 'org.projectlombok:lombok:1.18.2'
+    compile 'io.qameta.allure:allure-rest-assured:2.13.0'
+    compile 'io.rest-assured:rest-assured:3.0.3'
+    compile 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compile 'org.testng:testng:7.0.0'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'ch.qos.logback:logback-core:1.2.3'
+}
+
+publishToMavenLocal.dependsOn(build)
+
+publishing {
+    publications {
+        testRail(MavenPublication) {
+            groupId "ru.integrations"
+            artifactId 'CheckingLib'
+
+            artifact file("build/libs/CheckingLib-${ver}.jar")
+        }
+    }
+}
+
+signing {
+    sign configurations.archives
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            pom.project {
+                name 'Checking Helper'
+                packaging 'jar'
+                description 'This library for help checking response.'
+                url 'https://github.com/ivanovvlad9626/checking'
+                scm {
+                    connection 'scm:git:git://github.com/ivanovvlad9626/checking.git'
+                    developerConnection 'scm:git:ssh://github.com/ivanovvlad9626/checking.git'
+                    url 'https://github.com/ivanovvlad9626/checking/tree/master'
+                }
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'print://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'ivanovvlad9626'
+                        name 'Ivanov Vlad'
+                        email 'ivanovvlad.261996@mail.ru'
+                    }
+                }
+            }
+        }
+    }
+}
