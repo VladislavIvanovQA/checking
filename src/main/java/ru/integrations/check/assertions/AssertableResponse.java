@@ -44,13 +44,13 @@ public class AssertableResponse {
     }
 
     /**
-     * Извлечь строку по JsonPath.
+     * Execute string with JsonPath.
      *
      * @param jsonPath путь к атрибуту.
      * @return String
      */
     public <T> T getJsonPathValue(String jsonPath) {
-        log.info("Извлчение значения из тела ответа по JsonPath {}", jsonPath);
+        log.info("Execute variable in body response with JsonPath {}", jsonPath);
         return response
                 .then()
                 .extract()
@@ -59,13 +59,13 @@ public class AssertableResponse {
     }
 
     /**
-     * Извлчечь значение по HtmlPath.
+     * Execute string with HtmlPath.
      *
      * @param htmlPath путь к значению.
      * @return String
      */
     public String getHtmlPathValue(String htmlPath) {
-        log.info("Извлчение значения из тела ответа по HtmlPath {}", htmlPath);
+        log.info("Execute variable in body response with HtmlPath {}", htmlPath);
         return response
                 .then()
                 .extract()
@@ -74,12 +74,12 @@ public class AssertableResponse {
     }
 
     /**
-     * Извлечение параметра из заголовка ответа
+     * Execute string in header response
      * @param headerValue имя ключа
      * @return Значение.
      */
     public String getHeaderValue(String headerValue) {
-        log.info("Извлчение значения из заголовка ответа {}", headerValue);
+        log.info("Execute string in header response {}", headerValue);
         return response
                 .then()
                 .extract()
@@ -87,7 +87,7 @@ public class AssertableResponse {
     }
 
     /**
-     * Извлечь Json в Java-Класс.
+     * Execute Json in Java-Класс.
      *
      * @param tClass Class.class в который нужно извлечь ответ.
      * @param <T>    Тип возвращаемого класса.

@@ -3,7 +3,7 @@ package ru.integrations.check.condition;
 import io.restassured.response.Response;
 
 /**
- * Интерфейс для создания метода проверки.
+ * Interface create checking.
  */
 public interface Condition {
     /**
