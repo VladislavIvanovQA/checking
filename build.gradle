@@ -12,7 +12,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'maven'
 
-def ver = "0.3"
+def ver = "0.5"
 
 group 'com.github.ivanovvlad9626'
 archivesBaseName = "CheckingLib"

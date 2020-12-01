@@ -1,4 +1,4 @@
-package ru.integrations.check.condition.utils;
+package ru.integrations.check.utils;
 
 import java.lang.reflect.Field;
 import java.util.*;
