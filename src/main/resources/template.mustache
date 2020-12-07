@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div>
+    <div>Доброго времени суток</div>
+    <div>Прошло тестирование {{PROJECT_NAME}} автотестами.</div>
+    <br>
+    <div>Группа тестов: {{GROUP}}</div>
+    <div>Стенд: {{URL}}</div>
+    <br>
+    <div>Результат тестирования: <b>{{RESULT}}</b></div>
+    <div>Успешно: <b>{{SUCCESSES_COUNT}}</b></div>
+    <div>Ошибки: <b>{{ERROR_COUNT}}</b></div>
+    <div>Пропущено: <b>{{SKIP_COUNT}}</b></div>
+    <br>
+    <b><a href="{{RELEASE_URL}}">Сборка релиза в TFS</a></b>
+    <br>
+    <b><a href="{{REPORT_URL}}">Отчет тестирования</a></b>
+</div>
+</body>
+</html>
