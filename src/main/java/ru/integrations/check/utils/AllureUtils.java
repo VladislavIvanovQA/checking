@@ -1,6 +1,7 @@
 package ru.integrations.check.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SystemUtils;
 import ru.integrations.check.config.AllureConfig;
 
 import java.io.BufferedReader;
@@ -13,11 +14,22 @@ import java.util.regex.Pattern;
 public class AllureUtils {
     protected final AllureConfig config = new AllureConfig();
 
-    public String sendReportToAllure() throws Exception {
+    public String sendReportToAllure(Integer projectId) throws Exception {
         if (config.ALLURE_ENABLE) {
+            if (projectId > 0) {
+                config.ALLURE_PROJECT_ID = projectId;
+            }
             ProcessBuilder process = new ProcessBuilder();
             StringBuilder command = getCommand();
-            process.command("cmd.exe", "/c", command.toString());
+
+            String system = System.getenv("os.name");
+            if (SystemUtils.IS_OS_WINDOWS){
+                process.command("cmd.exe", "/c", command.toString());
+            } else {
+                if (SystemUtils.IS_OS_LINUX){
+                    process.command("bash", "-c", command.toString());
+                }
+            }
             StringBuilder builder = new StringBuilder();
             try {
                 Process processProgress = process.start();

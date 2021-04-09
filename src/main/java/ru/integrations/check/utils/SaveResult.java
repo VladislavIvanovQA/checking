@@ -21,9 +21,13 @@ public class SaveResult {
     private static AllureConfig config;
 
     public static void generateFile(ITestContext context, String projectName, String url, String releaseURLENV) {
+        generateFile(context, projectName, url, releaseURLENV, 0);
+    }
+
+    public static void generateFile(ITestContext context, String projectName, String url, String releaseURLENV, Integer projectId) {
         String launchId = null;
         try {
-            launchId = allure.sendReportToAllure();
+            launchId = allure.sendReportToAllure(projectId);
             config = allure.config;
         } catch (Exception e) {
             e.printStackTrace();
