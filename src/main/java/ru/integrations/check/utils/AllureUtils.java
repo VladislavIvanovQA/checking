@@ -16,19 +16,22 @@ public class AllureUtils {
 
     public String sendReportToAllure(Integer projectId) throws Exception {
         if (config.ALLURE_ENABLE) {
+            log.info("Allure enable!");
             if (projectId > 0) {
                 config.ALLURE_PROJECT_ID = projectId;
+                log.info("ProjectId: {}", projectId);
             }
             ProcessBuilder process = new ProcessBuilder();
             StringBuilder command = getCommand();
+            log.info("Command: {}", command);
 
-            String system = System.getenv("os.name");
-            if (SystemUtils.IS_OS_WINDOWS){
+            if (SystemUtils.IS_OS_WINDOWS) {
+                log.info("Use Windows");
                 process.command("cmd.exe", "/c", command.toString());
-            } else {
-                if (SystemUtils.IS_OS_LINUX){
-                    process.command("bash", "-c", command.toString());
-                }
+            } else if (SystemUtils.IS_OS_LINUX) {
+                log.info("Use Linux(Bash)");
+                process.command("bash", "-c", command.toString());
+
             }
             StringBuilder builder = new StringBuilder();
             try {
@@ -39,7 +42,7 @@ public class AllureUtils {
                     builder.append(line).append("\n");
                 }
                 int exitCode = processProgress.waitFor();
-                log.info("Exit with code: " + exitCode);
+                log.info("Exit with code: {} with reason: {}", exitCode, builder);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -52,7 +55,7 @@ public class AllureUtils {
         return "";
     }
 
-    private String findAndExtractLaunchId(String output){
+    private String findAndExtractLaunchId(String output) {
         Pattern findLaunch = Pattern.compile("Launch [\\[0-9]*]");
         Pattern findDigital = Pattern.compile("\\d+");
         Matcher launch = findLaunch.matcher(output);
