@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class AllureUtils {
-    protected final AllureConfig config = new AllureConfig();
+    protected static final AllureConfig config = new AllureConfig();
 
-    public String sendReportToAllure(Integer projectId) throws Exception {
+    public static String sendReportToAllure(Integer projectId) throws Exception {
         if (config.ALLURE_ENABLE) {
             log.info("Allure enable!");
             if (projectId > 0) {
@@ -23,15 +23,13 @@ public class AllureUtils {
             }
             ProcessBuilder process = new ProcessBuilder();
             StringBuilder command = getCommand();
-            log.info("Command: {}", command);
 
             if (SystemUtils.IS_OS_WINDOWS) {
                 log.info("Use Windows");
                 process.command("cmd.exe", "/c", command.toString());
             } else if (SystemUtils.IS_OS_LINUX) {
                 log.info("Use Linux(Bash)");
-                process.command("bash", "-c", command.toString());
-
+                process.command(config.ALLURE_LINUX_CMD, "-c", command.toString());
             }
             StringBuilder builder = new StringBuilder();
             try {
@@ -55,7 +53,7 @@ public class AllureUtils {
         return "";
     }
 
-    private String findAndExtractLaunchId(String output) {
+    private static String findAndExtractLaunchId(String output) {
         Pattern findLaunch = Pattern.compile("Launch [\\[0-9]*]");
         Pattern findDigital = Pattern.compile("\\d+");
         Matcher launch = findLaunch.matcher(output);
@@ -68,8 +66,11 @@ public class AllureUtils {
         return null;
     }
 
-    private StringBuilder getCommand() {
+    private static StringBuilder getCommand() {
         StringBuilder command = new StringBuilder();
+        if (!config.ALLURE_COMMAND_FOLDER.isEmpty()){
+            command.append(config.ALLURE_COMMAND_FOLDER);
+        }
         command.append("allurectl").append(" ").append("upload").append(" ").append(config.ALLURE_FOLDER).append(" ");
         command.append("--token").append(" ").append(config.ALLURE_TOKEN).append(" ");
         command.append("--endpoint").append(" ").append(config.ALLURE_ENDPOINT).append(" ");

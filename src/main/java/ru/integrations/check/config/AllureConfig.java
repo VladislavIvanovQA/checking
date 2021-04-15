@@ -6,6 +6,8 @@ import java.util.Properties;
 public class AllureConfig {
     public boolean ALLURE_ENABLE;
     public String ALLURE_FOLDER;
+    public String ALLURE_LINUX_CMD;
+    public String ALLURE_COMMAND_FOLDER;
     public String ALLURE_TOKEN;
     public String ALLURE_ENDPOINT;
     public Integer ALLURE_PROJECT_ID;
@@ -22,7 +24,21 @@ public class AllureConfig {
     public void init() {
         try {
             prop.load(AllureConfig.class.getClassLoader().getResourceAsStream("allureSetting.properties"));
-            ALLURE_FOLDER = prop.getProperty("allure.folder");
+            if (System.getenv("ALLURE_FOLDER") != null) {
+                ALLURE_FOLDER = System.getenv("ALLURE_FOLDER");
+            } else {
+                ALLURE_FOLDER = prop.getProperty("allure.folder");
+            }
+            if (System.getenv("ALLURE_LINUX_CMD") != null) {
+                ALLURE_LINUX_CMD = System.getenv("ALLURE_LINUX_CMD");
+            } else {
+                ALLURE_LINUX_CMD = "/bin/bash";
+            }
+            if (System.getenv("ALLURE_COMMAND_FOLDER") != null) {
+                ALLURE_COMMAND_FOLDER = System.getenv("ALLURE_COMMAND_FOLDER");
+            } else {
+                ALLURE_COMMAND_FOLDER = "";
+            }
             ALLURE_TOKEN = prop.getProperty("allure.token");
             ALLURE_ENDPOINT = prop.getProperty("allure.endpoint");
             if (ALLURE_PROJECT_ID == null || ALLURE_PROJECT_ID == 0) {
