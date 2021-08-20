@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Проверка statusCode.
+ * Check statusCode.
  */
 @RequiredArgsConstructor
 public class StatusCodeCondition implements Condition {
     private final int expectedStatusCode;
 
     /**
-     * Проверка на соответствие statusCode на полученный из ответа.
+     * Check equals status code in status code in response.
      */
     @Override
     public void check(Response response) {

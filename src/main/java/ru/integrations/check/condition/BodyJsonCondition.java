@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.hamcrest.Matcher;
 
 /**
- * Класс для извлечения значения по JsonPath.
+ * Class for execute with JsonPath.
  */
 @RequiredArgsConstructor
 public class BodyJsonCondition implements Condition {
@@ -13,6 +13,11 @@ public class BodyJsonCondition implements Condition {
     @SuppressWarnings("rawtypes")
     private final Matcher matcher;
 
+    /**
+     * Get value in htmlPath.
+     *
+     * @param response Response.
+     */
     @Override
     public void check(Response response) {
         response.then()

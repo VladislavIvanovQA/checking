@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.hamcrest.Matcher;
 
 /**
- * Класс для извлечения значения по HtmlPath.
+ * Class for execute with HtmlPath.
  */
 @RequiredArgsConstructor
 public class BodyHtmlCondition implements Condition {
@@ -13,9 +13,9 @@ public class BodyHtmlCondition implements Condition {
     private final Matcher htmlPath;
 
     /**
-     * Получение значения по htmlPath.
+     * Get value in htmlPath.
      *
-     * @param response Запрос.
+     * @param response Response.
      */
     @Override
     public void check(Response response) {

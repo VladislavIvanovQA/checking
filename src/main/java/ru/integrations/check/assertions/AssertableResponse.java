@@ -21,21 +21,21 @@ public class AssertableResponse {
         shouldHave(statusCode(status));
     }
 
-    public AssertableResponse(Response response, CheckBodyField... body) {
+    public AssertableResponse(Response response, CheckBodyField... checkBodyFields) {
         this.response = response;
-        checkAll(body);
+        checkAll(checkBodyFields);
     }
 
-    public AssertableResponse(Response response, Integer status, CheckBodyField... body) {
+    public AssertableResponse(Response response, Integer status, CheckBodyField... checkBodyFields) {
         this.response = response;
         shouldHave(statusCode(status));
-        checkAll(body);
+        checkAll(checkBodyFields);
     }
 
     /**
-     * Проверить содержит ли запрос искомое значение.
+     * Check response contains condition
      *
-     * @param conditions Тип проверки.
+     * @param conditions Type check.
      * @return AssertableResponse
      */
     public AssertableResponse shouldHave(Condition conditions) {
@@ -46,7 +46,7 @@ public class AssertableResponse {
     /**
      * Execute string with JsonPath.
      *
-     * @param jsonPath путь к атрибуту.
+     * @param jsonPath path response.
      * @return String
      */
     public <T> T getJsonPathValue(String jsonPath) {
@@ -61,7 +61,7 @@ public class AssertableResponse {
     /**
      * Execute string with HtmlPath.
      *
-     * @param htmlPath путь к значению.
+     * @param htmlPath path response.
      * @return String
      */
     public String getHtmlPathValue(String htmlPath) {
@@ -75,8 +75,9 @@ public class AssertableResponse {
 
     /**
      * Execute string in header response
-     * @param headerValue имя ключа
-     * @return Значение.
+     *
+     * @param headerValue key name
+     * @return value.
      */
     public String getHeaderValue(String headerValue) {
         log.info("Execute string in header response {}", headerValue);
@@ -87,11 +88,10 @@ public class AssertableResponse {
     }
 
     /**
-     * Execute Json in Java-Класс.
+     * Execute Json in Java-object.
      *
-     * @param tClass Class.class в который нужно извлечь ответ.
-     * @param <T>    Тип возвращаемого класса.
-     * @return TClass
+     * @param tClass Object with returned.
+     * @return tClass
      */
     public <T> T asPOJO(Class<T> tClass) {
         return response
@@ -100,18 +100,32 @@ public class AssertableResponse {
                 .as(tClass);
     }
 
+    /**
+     * Get status code.
+     *
+     * @return status code.
+     */
     public Integer getStatusCode() {
         return response
                 .getStatusCode();
     }
 
+    /**
+     * Response to ExtractableResponse
+     *
+     * @return ExtractableResponse
+     */
     public ExtractableResponse<Response> execute() {
         return response
                 .then()
                 .extract();
     }
 
-    public void checkAll(CheckBodyField... body) {
-        Arrays.asList(body).forEach(value -> shouldHave((Condition) value.bodyField()));
+    /**
+     * Check may condition in response;
+     * @param checkBodyFields
+     */
+    public void checkAll(CheckBodyField... checkBodyFields) {
+        Arrays.asList(checkBodyFields).forEach(value -> shouldHave((Condition) value.bodyField()));
     }
 }

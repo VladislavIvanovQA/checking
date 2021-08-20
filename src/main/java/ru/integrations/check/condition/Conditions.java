@@ -5,54 +5,59 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 
-/**
- * Класс помошник, для простоты обращения к проверкам.
- */
 @Slf4j
 @UtilityClass
 public class Conditions {
     /**
-     * Проверка statusCode ответа.
+     * Check statusCode response.
      *
-     * @param statusCode int 200 код ответа.
+     * @param statusCode Integer expected status code.
      * @return StatusCodeCondition
      */
-    @Step("Проверка кода ответа {statusCode}")
+    @Step("Check status code response, expected {statusCode}")
     public static StatusCodeCondition statusCode(int statusCode) {
-        log.info("Ответ содержит код ответа {}", statusCode);
+        log.info("Response equals status code: {}", statusCode);
         return new StatusCodeCondition(statusCode);
     }
 
     /**
-     * Проверка значения jsonPath на соотвествие matcher.
+     * Check value with jsonPath for equals condition.
      *
-     * @param jsonPath String jsonPath к элементу.
-     * @param matcher  Matcher условие проверки.
+     * @param jsonPath String jsonPath.
+     * @param matcher  Matcher condition.
      * @return BodyJsonCondition
      */
     @SuppressWarnings("rawtypes")
-    @Step("Проверка значения в теле ответа {jsonPath} на соотвествие {matcher}")
+    @Step("Check value in response with: {jsonPath} condition: {matcher}")
     public static BodyJsonCondition bodyField(String jsonPath, Matcher matcher) {
-        log.info("Значение в теле ответа {} соотвествует ожидаемому {}", jsonPath, matcher);
+        log.info("Value in response: {} equals to: {}", jsonPath, matcher);
         return new BodyJsonCondition(jsonPath, matcher);
     }
 
     /**
-     * Проверка на соотвествие matcher.
+     * Check html response for equals condition.
      *
-     * @param matcher Matcher условие проверки.
+     * @param matcher Matcher condition.
      * @return BodyHtmlCondition
      */
     @SuppressWarnings("rawtypes")
-    @Step("Проверка на соотвествие {matcher}")
+    @Step("Check response condition: {matcher}")
     public static BodyHtmlCondition bodyField(Matcher matcher) {
-        log.info("Ответ содержит {}", matcher);
+        log.info("Response equals: {}", matcher);
         return new BodyHtmlCondition(matcher);
     }
+
+    /**
+     * Check header value for equal condition.
+     *
+     * @param headerValue header key.
+     * @param matcher condition.
+     * @return HeaderCondition
+     */
     @SuppressWarnings("rawtypes")
-    @Step("Проверка значения в заголовке ответа {headerValue} на соотвествие {matcher}")
+    @Step("Check header value: {headerValue} condition: {matcher}")
     public static HeaderCondition headerField(String headerValue, Matcher matcher) {
-        log.info("Значение {} в заголовке ответа ожидается {}", headerValue, matcher);
+        log.info("Value: {} equals in response: {}", headerValue, matcher);
         return new HeaderCondition(headerValue, matcher);
     }
 }
